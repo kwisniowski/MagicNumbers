@@ -2,12 +2,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileDifferentiator {
 
     public final String GIF_MARK = "GIF89";
-    public final double JPG_MARK = 0xFFd8;
+    public String[] handledExtentions = {"jpg","gif","txt"};
 
+    public boolean validateIsHandled(File file) {
+        List<String> handledExt = Arrays.asList(handledExtentions);
+        if (handledExt.contains(getFileExtension(file))) {
+            return true;
+        }
+        else return false;
+    }
 
     public String getFileExtension(File file) {
         int dotIndex = file.getName().lastIndexOf(".");
@@ -27,7 +36,7 @@ public class FileDifferentiator {
         return String.valueOf(first5Bytes);
     }
 
-
+    //Check if first 5 chars are GIF89
     public boolean validateGifByMagicNumbers(File file) throws FileNotFoundException {
         String magicNumbers = getFirst5Chars(new FileInputStream(file));
         if (magicNumbers.equals(GIF_MARK)) {
@@ -36,7 +45,7 @@ public class FileDifferentiator {
         else return false;
     }
 
-
+    //Check if first to bytes are 0xFF(-1) and 0xD8(-40)
     public boolean validateJPGByMagicNumbers(File file) {
         boolean result = false;
         byte[] bytes = new byte[2];
@@ -54,6 +63,7 @@ public class FileDifferentiator {
         return result;
     }
 
+    //Check if all chars are ASCII (0-127)
     public boolean validateTxtFileByContent(File file) {
         boolean result = true;
         boolean eof = false;
@@ -78,5 +88,47 @@ public class FileDifferentiator {
         return result;
     }
 
+    public String validateFile(File file) throws FileNotFoundException {
+        String result = null;
+        if (!validateIsHandled(file)) {
+            throw new IllegalArgumentException();
+        }
 
+        else {
+            if (getFileExtension(file).equals("jpg")) {
+                if (validateJPGByMagicNumbers(file)) {
+                    result = "Correct! File extension is jpg and it is a jpg file";
+                }
+                else if (validateGifByMagicNumbers(file)) {
+                    return "Not correct! File extension is jpg and it is a gif file";
+                }
+                else if (validateTxtFileByContent(file)) {
+                    return "Not correct! File extension is jpg and it is a txt file";
+                }
+            }
+            else if (getFileExtension(file).equals("gif")) {
+                if (validateJPGByMagicNumbers(file)) {
+                    result = "Correct! File extension is gif and it is a jpg file";
+                }
+                else if (validateGifByMagicNumbers(file)) {
+                    return "Correct! File extension is gif and it is a gif file";
+                }
+                else if (validateTxtFileByContent(file)) {
+                    return "Not correct! File extension is gif and it is a txt file";
+                }
+            }
+            else if (getFileExtension(file).equals("txt")) {
+                if (validateJPGByMagicNumbers(file)) {
+                    result = "Not correct! File extension is txt and it is a jpg file";
+                }
+                else if (validateGifByMagicNumbers(file)) {
+                    return "Not correct! File extension is txt and it is a gif file";
+                }
+                else if (validateTxtFileByContent(file)) {
+                    return "Correct! File extension is txt and it is a txt file";
+                }
+            }
+        }
+        return result;
+    }
 }

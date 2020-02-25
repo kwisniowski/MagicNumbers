@@ -4,6 +4,7 @@ public class FileLocationConfig {
     private final String gifFilename = "tenor.gif";
     private final String jpgFilename = "button.jpg";
     private final String txFileName = "test.txt";
+    private final String fakeJpgFile = "test.jpg";
 
     public String getPath() {
         return path;
@@ -19,5 +20,9 @@ public class FileLocationConfig {
 
     public String getTxFileName() {
         return txFileName;
+    }
+
+    public String getFakeJpgFile() {
+        return fakeJpgFile;
     }
 }
