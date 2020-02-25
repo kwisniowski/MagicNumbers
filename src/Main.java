@@ -14,7 +14,7 @@ public class Main {
         File correctJpgFile = new File("files\\button.jpg");
         File correctGifFile = new File("files\\tenor.gif");
         File correctTxtFile = new File("files\\test.txt");
-        File fakeGifFile = new File("files\\fakeGifFile1.gif");
+        File fakeGifFile = new File("files\\fakeGifFile.gif");
 
         System.out.println(differentiator.validateFile(correctJpgFile));
         System.out.println(differentiator.validateFile(correctGifFile));
