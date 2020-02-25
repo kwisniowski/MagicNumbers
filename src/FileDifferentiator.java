@@ -10,7 +10,7 @@ public class FileDifferentiator {
     public final String GIF_MARK = "GIF89";
     public String[] handledExtentions = {"jpg","gif","txt"};
 
-    public boolean validateIsHandled(File file) {
+    private boolean validateIsHandled(File file) {
         List<String> handledExt = Arrays.asList(handledExtentions);
         if (handledExt.contains(getFileExtension(file))) {
             return true;
@@ -18,13 +18,13 @@ public class FileDifferentiator {
         else return false;
     }
 
-    public String getFileExtension(File file) {
+    private String getFileExtension(File file) {
         int dotIndex = file.getName().lastIndexOf(".");
         return file.getName().substring(dotIndex+1,dotIndex+4);
     }
 
 
-    public String getFirst5Chars(FileInputStream inputStream) throws FileNotFoundException {
+    private String getFirst5Chars(FileInputStream inputStream) throws FileNotFoundException {
         char[] first5Bytes = new char[5];
         for (int i = 0; i <= 4; i++) {
             try {
@@ -37,7 +37,7 @@ public class FileDifferentiator {
     }
 
     //Check if first 5 chars are GIF89
-    public boolean validateGifByMagicNumbers(File file) throws FileNotFoundException {
+    private boolean validateGifByMagicNumbers(File file) throws FileNotFoundException {
         String magicNumbers = getFirst5Chars(new FileInputStream(file));
         if (magicNumbers.equals(GIF_MARK)) {
             return true;
@@ -46,7 +46,7 @@ public class FileDifferentiator {
     }
 
     //Check if first to bytes are 0xFF(-1) and 0xD8(-40)
-    public boolean validateJPGByMagicNumbers(File file) {
+    private boolean validateJPGByMagicNumbers(File file) {
         boolean result = false;
         byte[] bytes = new byte[2];
         try {
@@ -64,7 +64,7 @@ public class FileDifferentiator {
     }
 
     //Check if all chars are ASCII (0-127)
-    public boolean validateTxtFileByContent(File file) {
+    private boolean validateTxtFileByContent(File file) {
         boolean result = true;
         boolean eof = false;
 
@@ -108,7 +108,7 @@ public class FileDifferentiator {
             }
             else if (getFileExtension(file).equals("gif")) {
                 if (validateJPGByMagicNumbers(file)) {
-                    result = "Correct! File extension is gif and it is a jpg file";
+                    result = "Not correct! File extension is gif and it is a jpg file";
                 }
                 else if (validateGifByMagicNumbers(file)) {
                     return "Correct! File extension is gif and it is a gif file";
@@ -131,4 +131,5 @@ public class FileDifferentiator {
         }
         return result;
     }
+
 }

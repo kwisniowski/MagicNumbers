@@ -4,35 +4,23 @@ import java.io.FileNotFoundException;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        FileLocationConfig config = new FileLocationConfig();
-        File testGifFile = new File(config.getPath()+config.getGifFilename());
-        File testJpgFile = new File(config.getPath()+config.getJpgFilename());
-        File testTxtFile = new File(config.getPath()+config.getTxFileName());
-        File fakeJpgFile = new File(config.getPath()+config.getFakeJpgFile());
 
+        //For checking files from directory put it into specified directory and put a name in correct String value
+        FileLocationConfig config = new FileLocationConfig();
+
+        //For checking files included in project put them into files directory
         FileDifferentiator differentiator = new FileDifferentiator();
 
-        if (testGifFile!=null) {
-            System.out.println(differentiator.getFileExtension(testGifFile));
-            System.out.println(differentiator.validateGifByMagicNumbers(testGifFile));
-            System.out.println(differentiator.validateIsHandled(testGifFile));
-        }
+        File correctJpgFile = new File("files\\button.jpg");
+        File correctGifFile = new File("files\\tenor.gif");
+        File correctTxtFile = new File("files\\test.txt");
+        File fakeGifFile = new File("files\\fakeGifFile1.gif");
 
-        if (testJpgFile!=null) {
-            System.out.println(differentiator.getFileExtension(testJpgFile));
-            System.out.println(differentiator.validateJPGByMagicNumbers(testJpgFile));
-            System.out.println(differentiator.validateIsHandled(testJpgFile));
-        }
+        System.out.println(differentiator.validateFile(correctJpgFile));
+        System.out.println(differentiator.validateFile(correctGifFile));
+        System.out.println(differentiator.validateFile(correctTxtFile));
+        System.out.println(differentiator.validateFile(fakeGifFile));
 
-        if (testTxtFile!=null) {
-            System.out.println(differentiator.getFileExtension(testTxtFile));
-            System.out.println(differentiator.validateTxtFileByContent(testTxtFile));
-            System.out.println(differentiator.validateIsHandled(testTxtFile));
-        }
-
-        System.out.println(differentiator.validateFile(testGifFile));
-        System.out.println(differentiator.validateFile(testJpgFile));
-        System.out.println(differentiator.validateFile(testTxtFile));
-        System.out.println(differentiator.validateFile(fakeJpgFile));
     }
 }
+
