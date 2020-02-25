@@ -54,7 +54,29 @@ public class FileDifferentiator {
         return result;
     }
 
+    public boolean validateTxtFileByContent(File file) {
+        boolean result = true;
+        boolean eof = false;
 
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            while (!eof) {
+                int input = inputStream.read();
+                if (input>128) {
+                    result = false;
+                }
+                if (input == -1) {
+                    eof = true;
+                }
+            }
+        }
+
+         catch (FileNotFoundException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 
 }
